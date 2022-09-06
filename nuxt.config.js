@@ -1,3 +1,4 @@
+import colors from 'vuetify/lib/util/colors'
 import webpack from 'webpack'
 
 export default {
@@ -5,7 +6,8 @@ export default {
   ssr: false,
 
   router: {
-    base: '/icrm/'
+    base: '/icrm/',
+    middleware: ['set-token']
   },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -29,13 +31,14 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~/plugins/axios',
     '~/plugins/moment',
     '~/plugins/api',
     '~/plugins/vuex-persist'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
-  components: true,
+  components: false,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
@@ -81,7 +84,7 @@ export default {
           tableheader: '#EFEFEF',
           secondary: '#788486',
           black: '#454A4B',
-          grey: '#CCD4D6',
+          grey: colors.grey.base,
           info: '#1e88e5',
           success: '#21c1d6',
           accent: '#fc4b6c',
@@ -92,7 +95,7 @@ export default {
           tableheader: '#DDF6FB',
           secondary: '#788486',
           black: '#454A4B',
-          grey: '#CCD4D6',
+          grey: colors.grey.base,
           info: '#1e88e5',
           success: '#21c1d6',
           accent: '#fc4b6c',

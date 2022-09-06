@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <common-sidebar v-model="mini" />
-    <v-main>
+    <v-main class="app-background">
       <common-tab v-model="tab" :mini.sync="mini">
         <v-tab v-for="(v, i) in tabs" :key="i" @click="router.push(v.path)">
           <div class="d-flex align-center">
@@ -84,3 +84,9 @@ export default {
   name: 'Default'
 }
 </script>
+
+<style lang="scss">
+.app-background {
+  background-color: var(--v-grey-lighten3);
+}
+</style>
