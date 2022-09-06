@@ -1,7 +1,7 @@
 export default {
-  async login (data) {
+  async lihatLog () {
     try {
-      const res = await this.$axios.$post('auth/login')
+      const res = await this.$axios.$post('pengguna/lihat-log')
       if (!res.success) {
         return Promise.reject(new Error(res.message))
       }

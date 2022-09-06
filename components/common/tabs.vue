@@ -55,6 +55,8 @@ const setMini = () => {
 .tabs {
   display: flex;
   position: sticky;
+  top: 0;
+  z-index: 1030;
 
   .v-tabs {
     width:  calc(100% - 78px);
