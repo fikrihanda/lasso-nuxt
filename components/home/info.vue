@@ -111,8 +111,6 @@ const jenisPengguna = computed(() => {
   color: #788486;
 }
 .home-profile-jenispengguna {
-  margin-bottom: 30px;
-
   span {
     font-weight: 600;
     font-size: 12px;
