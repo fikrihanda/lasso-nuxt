@@ -4,9 +4,9 @@
       <v-col cols="12">
         <v-card>
           <v-card-text>
-            <h2 class="font-weight-medium">
+            <div class="text-h6 font-weight-medium">
               Home
-            </h2>
+            </div>
           </v-card-text>
         </v-card>
       </v-col>
@@ -31,7 +31,14 @@
         </v-row>
       </v-col>
       <v-col cols="12" sm="12" md="4">
-        a
+        <v-row>
+          <v-col cols="12">
+            <home-last />
+          </v-col>
+          <v-col cols="12">
+            <home-role-menu />
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
   </v-container>
@@ -40,11 +47,16 @@
 <script setup>
 import HomeInfo from '@/components/home/info'
 import HomeActivity from '@/components/home/activity'
+import HomeLast from '~/components/home/last'
+import HomeRoleMenu from '~/components/home/role-menu'
 </script>
 
 <script>
 export default {
-  middleware: ['is-auth']
+  middleware: ['is-auth'],
+  head: {
+    title: 'Home'
+  }
 }
 </script>
 

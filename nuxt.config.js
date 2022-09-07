@@ -34,7 +34,8 @@ export default {
     '~/plugins/axios',
     '~/plugins/moment',
     '~/plugins/api',
-    '~/plugins/vuex-persist'
+    '~/plugins/vuex-persist',
+    '~/plugins/vue-apexcharts'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
