@@ -1,14 +1,14 @@
 <template>
   <v-navigation-drawer
+    v-model="model"
     app
-    permanent
     mini-variant-width="70"
     mobile-breakpoint="960"
-    :mini-variant="model"
+    :mini-variant="mini"
   >
     <template #prepend>
       <div class="mb-3 pa-2 mt-3">
-        <img v-if="!model" :src="require('~/assets/images/logo/logo_name.svg')" width="140" alt="logo">
+        <img v-if="!mini" :src="require('~/assets/images/logo/logo_name.svg')" width="140" alt="logo">
         <div v-else class="d-flex justify-center">
           <img :src="require('~/assets/images/logo/logo.png')" width="24" alt="logo">
         </div>
@@ -63,11 +63,11 @@
     </v-list>
     <template #append>
       <div class="pa-2">
-        <v-btn block color="primary" :width="model ? 38 : '100%'" @click="onLogout">
-          <v-icon :left="!model">
+        <v-btn block color="primary" :width="mini ? 38 : '100%'" @click="onLogout">
+          <v-icon :left="!mini">
             mdi-logout
           </v-icon>
-          <span v-show="!model">Logout</span>
+          <span v-show="!mini">Logout</span>
         </v-btn>
       </div>
     </template>
@@ -88,6 +88,12 @@ const props = defineProps({
     default () {
       return false
     }
+  },
+  mini: {
+    type: Boolean,
+    default () {
+      return false
+    }
   }
 })
 
@@ -95,7 +101,9 @@ const props = defineProps({
 const emits = defineEmits(['input'])
 
 const model = computed({
-  get: () => props.value,
+  get: () => {
+    return props.value
+  },
   set: val => emits('input', val)
 })
 

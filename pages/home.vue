@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12">
         <v-card>
-          <v-card-text>
+          <v-card-text class="pa-3">
             <div class="text-h6 font-weight-medium">
               Home
             </div>
@@ -14,7 +14,7 @@
         <v-row>
           <v-col cols="12">
             <v-card>
-              <v-card-text>
+              <v-card-text class="pa-3">
                 <home-info />
               </v-card-text>
             </v-card>
@@ -23,7 +23,7 @@
         <v-row>
           <v-col cols="12">
             <v-card>
-              <v-card-text>
+              <v-card-text class="pa-3">
                 <home-activity />
               </v-card-text>
             </v-card>
@@ -33,7 +33,11 @@
       <v-col cols="12" sm="12" md="4">
         <v-row>
           <v-col cols="12">
-            <home-last />
+            <v-card>
+              <v-card-text class="pa-3">
+                <home-last />
+              </v-card-text>
+            </v-card>
           </v-col>
           <v-col cols="12">
             <home-role-menu />

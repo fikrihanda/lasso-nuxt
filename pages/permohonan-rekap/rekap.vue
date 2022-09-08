@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12">
         <v-card>
-          <v-card-text>
+          <v-card-text class="pa-3">
             <v-row align="center">
               <v-col cols="6">
                 <div class="text-h6 font-weight-medium">
@@ -26,32 +26,18 @@
       </v-col>
     </v-row>
     <v-expand-transition>
-      <v-row v-if="open.filter">
+      <v-row v-show="open.filter">
         <v-col cols="12">
           <v-card>
-            <v-card-text>
-              <v-row>
-                <v-col cols="12" md="6">
-                  <v-text-field label="Regional" hide-details outlined dense height="36" />
-                </v-col>
-                <v-col cols="12" md="6">
-                  <v-text-field label="Kantor Perwakilan" hide-details outlined dense />
-                </v-col>
-                <v-col cols="12" md="6">
-                  <v-text-field label="Kantor Perwakilan" hide-details outlined dense />
-                </v-col>
-                <v-col cols="12" md="6">
-                  <v-btn depressed color="primary" height="40">
-                    <v-icon>mdi-magnify</v-icon>
-                  </v-btn>
-                  <v-btn depressed color="primary" height="40">
-                    <v-icon>mdi-file-excel</v-icon>
-                  </v-btn>
-                  <v-btn depressed color="primary" height="40">
-                    <v-icon>mdi-table-cog</v-icon>
-                  </v-btn>
-                </v-col>
-              </v-row>
+            <v-card-text class="pa-3">
+              <per-rekap-pencarian />
+            </v-card-text>
+          </v-card>
+        </v-col>
+        <v-col cols="12">
+          <v-card>
+            <v-card-text class="pa-3">
+              <per-rekap-table />
             </v-card-text>
           </v-card>
         </v-col>
@@ -61,29 +47,12 @@
 </template>
 
 <script setup>
-import { computed, reactive } from '@nuxtjs/composition-api'
+import { reactive } from '@nuxtjs/composition-api'
+import PerRekapPencarian from '~/components/permohonan-rekap/rekap/pencarian'
+import PerRekapTable from '~/components/permohonan-rekap/rekap/tables'
 
 const open = reactive({
-  filter: true,
-  date: false
-})
-
-// eslint-disable-next-line no-unused-vars
-const form = reactive({
-  regional: '',
-  office: '',
-  dates: []
-})
-
-// eslint-disable-next-line no-unused-vars
-const options = reactive({
-  regional: [],
-  office: []
-})
-
-// eslint-disable-next-line no-unused-vars
-const dateRangeText = computed(() => {
-
+  filter: true
 })
 </script>
 

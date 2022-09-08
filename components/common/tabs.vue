@@ -1,6 +1,6 @@
 <template>
   <div class="tabs">
-    <v-btn color="primary" depressed tile height="48" @click="setMini">
+    <v-btn color="primary" depressed tile height="48" @click="toggleClick">
       <v-icon>mdi-menu</v-icon>
     </v-btn>
     <v-tabs
@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import { computed } from '@nuxtjs/composition-api'
+import { computed, useContext } from '@nuxtjs/composition-api'
 
 // eslint-disable-next-line no-undef
 const props = defineProps({
@@ -24,30 +24,21 @@ const props = defineProps({
     default () {
       return null
     }
-  },
-  mini: {
-    type: Boolean,
-    default () {
-      return false
-    }
   }
 })
 
 // eslint-disable-next-line no-undef
-const emits = defineEmits(['input', 'update:mini'])
+const emits = defineEmits(['input', 'toggle'])
+
+const { $vuetify } = useContext()
 
 const model = computed({
   get: () => props.value,
   set: val => emits('input', val)
 })
 
-const miniModel = computed({
-  get: () => props.mini,
-  set: val => emits('update:mini', val)
-})
-
-const setMini = () => {
-  miniModel.value = !miniModel.value
+const toggleClick = () => {
+  emits('toggle', $vuetify.breakpoint.smAndDown ? 'drawer' : 'mini')
 }
 </script>
 
@@ -56,7 +47,7 @@ const setMini = () => {
   display: flex;
   position: sticky;
   top: 0;
-  z-index: 1030;
+  z-index: 1;
 
   .v-tabs {
     width:  calc(100% - 78px);
