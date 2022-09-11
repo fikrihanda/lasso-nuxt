@@ -1,8 +1,8 @@
 <template>
   <v-app>
-    <common-sidebar v-model="mini" />
+    <common-sidebar v-model="open.sidebar" :mini="open.mini" />
     <v-main class="app-background">
-      <common-tab v-model="tab" :mini.sync="mini">
+      <common-tab v-model="tab" @toggle="toggleSidebar">
         <v-tab v-for="(v, i) in tabs" :key="i" @click="router.push(v.path)">
           <div class="d-flex align-center">
             <span :class="[tabs.length >= 2 && 'mr-3']">{{ v.header }}</span>
@@ -18,16 +18,21 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref, useRoute, useRouter, watch } from '@nuxtjs/composition-api'
+import { computed, onMounted, reactive, ref, useContext, useRoute, useRouter, watch } from '@nuxtjs/composition-api'
 import CommonSidebar from '@/components/common/sidebar'
 import CommonTab from '@/components/common/tabs'
 
+const { $vuetify } = useContext()
 const route = useRoute()
 const router = useRouter()
 
 const tab = ref(null)
 const tabs = ref([])
-const mini = ref(false)
+
+const open = reactive({
+  sidebar: !$vuetify.breakpoint.smAndDown,
+  mini: false
+})
 
 const curretTab = computed(() => {
   return route.value
@@ -70,6 +75,17 @@ const removeSelect = (tab) => {
   }
 }
 
+const toggleSidebar = (state) => {
+  if (state === 'mini') {
+    open.sidebar = true
+    open.mini = !open.mini
+  }
+  if (state === 'drawer') {
+    open.mini = false
+    open.sidebar = !open.sidebar
+  }
+}
+
 watch(() => curretTab.value, () => {
   addMetaOrSelect()
 })
@@ -86,6 +102,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import "assets/styles/_grid.scss";
+
 .app-background {
   background-color: var(--v-grey-lighten3);
 }

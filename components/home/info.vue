@@ -7,7 +7,7 @@
     </v-col>
     <v-col cols="12" sm="12" md="10">
       <v-row>
-        <v-col cols="12">
+        <v-col cols="12" class="mb-3">
           <div class="home-profile-name">
             {{ info.nama }}
           </div>
@@ -18,7 +18,7 @@
             <span>{{ jenisPengguna }}</span>
           </div>
         </v-col>
-        <v-col cols="6">
+        <v-col cols="6" class="mb-3">
           <div>
             <div class="home-group-label">
               Email
@@ -28,7 +28,7 @@
             </div>
           </div>
         </v-col>
-        <v-col cols="6">
+        <v-col cols="6" class="mb-3">
           <div>
             <div class="home-group-label">
               No. Telepon
@@ -38,7 +38,7 @@
             </div>
           </div>
         </v-col>
-        <v-col cols="6">
+        <v-col cols="6" class="mb-3">
           <div>
             <div class="home-group-label">
               Regional

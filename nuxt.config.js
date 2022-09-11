@@ -12,8 +12,8 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - ICRM',
-    title: 'ICRM',
+    titleTemplate: '%s - iCRM Plus',
+    title: 'iCRM Plus',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -27,6 +27,7 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
+    'devextreme/dist/css/dx.light.css'
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -34,7 +35,8 @@ export default {
     '~/plugins/axios',
     '~/plugins/moment',
     '~/plugins/api',
-    '~/plugins/vuex-persist'
+    '~/plugins/vuex-persist',
+    '~/plugins/vue-apexcharts'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -117,7 +119,9 @@ export default {
   },
 
   publicRuntimeConfig: {
-    googleClientId: process.env.GOOGLE_CLIENT_ID
+    googleClientId: process.env.GOOGLE_CLIENT_ID,
+    crmAPI: process.env.CRM_API,
+    cdnAPI: process.env.CDN_API
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
