@@ -7,7 +7,7 @@
             <v-row align="center">
               <v-col cols="6">
                 <div class="text-h6 font-weight-medium">
-                  Rekap Permohonan
+                  Rekap Permohonan Per Tanggal
                 </div>
               </v-col>
               <v-col cols="6">
@@ -30,8 +30,8 @@
         <v-col cols="12" class="mb-3">
           <v-card>
             <v-card-text class="pa-3">
-              <per-rekap-pencarian
-                ref="refPerRekapPencarian"
+              <per-tanggal-pencarian
+                ref="refPerTanggalPencarian"
                 @choose-col="chooseCol"
                 @search="onSearch"
               />
@@ -66,13 +66,13 @@
 
 <script setup>
 import { computed, reactive, ref, useContext, watch } from '@nuxtjs/composition-api'
-import PerRekapPencarian from '~/components/permohonan-rekap/rekap/pencarian'
+import PerTanggalPencarian from '~/components/permohonan-rekap/tanggal/pencarian'
 import Tables from '~/components/common/tables'
 import Paginations from '~/components/common/pagination'
 
 const { $axios } = useContext()
 const refTables = ref(null)
-const refPerRekapPencarian = ref(null)
+const refPerTanggalPencarian = ref(null)
 const lists = ref([])
 const pagination = reactive({
   limit: 20,
@@ -89,13 +89,13 @@ const loading = reactive({
 const column = computed(() => {
   return [
     {
-      caption: 'Nama Agen',
-      field: 'namaAgen',
+      caption: 'Tanggal',
+      field: 'tanggal',
       fixed: true
     },
     {
-      caption: 'Regional',
-      field: 'namaSbu',
+      caption: 'Hari',
+      field: 'hari',
       fixed: true
     },
     {
@@ -119,8 +119,8 @@ const column = computed(() => {
       field: 'closeLost'
     },
     {
-      caption: 'Total',
-      field: 'totalPermohonan'
+      caption: 'Home Connected',
+      field: 'hc'
     }
   ]
 })
@@ -130,12 +130,15 @@ const chooseCol = () => {
 }
 
 const getAll = async () => {
-  const search = refPerRekapPencarian.value.search
+  const search = refPerTanggalPencarian.value.search
   loading.table = true
   try {
-    const res = await $axios.$post('permohonan/rekap', {
+    const res = await $axios.$post('permohonan/rekap/pertanggal', {
       idKp: search.office,
       idSbu: search.regional,
+      idMobilePengguna: search.agent,
+      idLayanan: search.layanan,
+      idProduk: search.produk,
       limit: pagination.limit,
       pageIn: pagination.page,
       tanggalMulai: search.dates[0],
@@ -171,7 +174,7 @@ watch(() => pagination.limit, async () => {
 export default {
   middleware: ['is-auth'],
   head: {
-    title: 'Rekap Permohonan'
+    title: 'Rekap Permohonan Per Tanggal'
   }
 }
 </script>
@@ -179,8 +182,8 @@ export default {
 <router>
 {
   meta: {
-    header: 'Rekap Permohonan',
-    include: 'pages/permohonan-rekap/rekap.vue'
+    header: 'Rekap Permohonan Per Tanggal',
+    include: 'pages/permohonan-rekap/tanggal.vue'
   }
 }
 </router>

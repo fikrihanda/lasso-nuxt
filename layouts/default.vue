@@ -102,6 +102,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import "assets/styles/_grid.scss";
+
 .app-background {
   background-color: var(--v-grey-lighten3);
 }

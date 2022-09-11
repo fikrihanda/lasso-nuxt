@@ -1,7 +1,13 @@
 export default function ({ store, $axios }) {
+  $axios.onResponse((res) => {
+    const { data } = res
+    if (!_.isEmpty(data)) {
+      if (!data.success) { return Promise.reject(new Error(data.message)) }
+    }
+  })
   $axios.onError((err) => {
     const response = err.response
-    const { status = 500 } = response?.data
+    const status = response?.data?.status ?? 400
     if (status === 401) {
       store.commit('authorization/setMenusMobile', [])
       store.commit('authorization/setRegionals', '')

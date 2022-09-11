@@ -3,7 +3,6 @@
     ref="dataGrid"
     width="100%"
     :data-source="data"
-    key-expr="date"
     :allow-column-reordering="true"
     :show-column-lines="true"
     :show-row-lines="true"
@@ -12,24 +11,28 @@
     :show-borders="true"
     :selection="{ mode: 'single' }"
   >
+    <dx-paging :enabled="false" />
     <dx-selection
       v-if="checkList"
       mode="multiple"
       show-check-boxes-mode="always"
       :allow-select-all="false"
     />
-    <dx-column-chooser :enabled="false" />
     <dx-column-fixing :enabled="true" />
     <dx-scrolling
       :use-native="true"
       mode="standard"
     />
-    <dx-paging :page-size="100" />
-    <dx-column v-for="(v, i) in fixColumn" :key="i" v-bind="v">
-      <template #[v.cellTemplate]="ctx">
-        <slot :name="v.cellTemplate" v-on="ctx" />
-      </template>
-    </dx-column>
+    <dx-column v-for="(v, i) in fixColumn" :key="i" v-bind="v" />
+    <template v-for="(v, i) in cellTemplates" #[v]="ctx">
+      <div :key="i">
+        <slot :name="`temp-${v}`" v-bind="ctx">
+          <div>
+            {{ ctx.data.value }}
+          </div>
+        </slot>
+      </div>
+    </template>
   </dx-data-grid>
 </template>
 
@@ -37,11 +40,10 @@
 import {
   DxDataGrid,
   DxColumn,
-  DxColumnChooser,
   DxColumnFixing,
   DxScrolling,
-  DxPaging,
-  DxSelection
+  DxSelection,
+  DxPaging
 } from 'devextreme-vue/data-grid'
 import { computed, ref } from '@nuxtjs/composition-api'
 
@@ -81,17 +83,35 @@ const fixColumn = computed(() => {
       const re = {
         fixed: col?.fixed ?? false,
         caption: col?.caption ?? '',
-        type: col?.type ?? '',
-        field: col?.field ?? '',
+        dataType: col?.type ?? '',
+        dataField: col?.field ?? '',
         align: col?.align ?? '',
         width: col?.width ?? '',
         visible: col?.visible ?? true
       }
-      re.cellTemplate = `cell${re.field}`
+      re.cellTemplate = `cell(${re.dataField})`
       return re
     })
     : []
 })
-</script>
 
-<style src="~/assets/styles/table.scss" lang="scss"/>
+// eslint-disable-next-line no-unused-vars
+const cellTemplates = computed(() => {
+  const cols = _.cloneDeep(fixColumn.value)
+  return _.uniq(cols.map(col => col.cellTemplate))
+})
+
+const showColumnChooser = () => {
+  dataGrid.value.instance.showColumnChooser()
+}
+
+const hideColumnChooser = () => {
+  dataGrid.value.instance.hideColumnChooser()
+}
+
+// eslint-disable-next-line no-undef
+defineExpose({
+  showColumnChooser,
+  hideColumnChooser
+})
+</script>

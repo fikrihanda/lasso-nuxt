@@ -14,7 +14,7 @@
           outlined
           dense
           clearable
-          @input="getOffice"
+          @input="getChildReq"
         />
       </v-col>
       <v-col cols="12" md="6" class="mb-3">
@@ -31,9 +31,26 @@
           outlined
           dense
           clearable
+          @input="getAgent"
         />
       </v-col>
-      <v-col cols="12" md="6">
+      <v-col cols="12" md="6" class="mb-3">
+        <v-select
+          v-model="search.agent"
+          :items="options.agent"
+          :loading="loading.agent"
+          :disabled="!search.regional && !search.office"
+          :rules="rules.agent"
+          item-text="nama"
+          item-value="idPenggunaMobile"
+          label="Pilih Agent"
+          hide-details
+          outlined
+          dense
+          clearable
+        />
+      </v-col>
+      <v-col cols="12" md="6" class="mb-3">
         <v-menu
           v-model="open.date"
           :close-on-content-click="false"
@@ -68,6 +85,38 @@
           />
         </v-menu>
       </v-col>
+      <v-col cols="12" md="6" class="mb-3">
+        <v-select
+          v-model="search.layanan"
+          :items="options.layanan"
+          :loading="loading.layanan"
+          :rules="rules.layanan"
+          item-text="namaLayanan"
+          item-value="idLayanan"
+          label="Pilih Layanan"
+          hide-details
+          outlined
+          dense
+          clearable
+          @input="getProduk"
+        />
+      </v-col>
+      <v-col cols="12" md="6" class="mb-3">
+        <v-select
+          v-model="search.produk"
+          :items="options.produk"
+          :loading="loading.produk"
+          :rules="rules.produk"
+          :disabled="!search.layanan"
+          item-text="namaProduk"
+          item-value="idProduk"
+          label="Pilih Produk"
+          hide-details
+          outlined
+          dense
+          clearable
+        />
+      </v-col>
       <v-col cols="12" md="6">
         <v-btn color="primary" height="40" @click="onSearch">
           <v-icon>mdi-magnify</v-icon>
@@ -94,13 +143,17 @@ const emits = defineEmits(['search', 'export', 'choose-col'])
 
 useFetch(async () => {
   await getRegional()
+  await getLayanan()
 })
 
 const refForm = ref(null)
 
 const loading = reactive({
   regional: false,
-  office: false
+  office: false,
+  agent: false,
+  layanan: false,
+  produk: false
 })
 
 const open = reactive({
@@ -110,13 +163,19 @@ const open = reactive({
 const search = reactive({
   regional: '',
   office: '',
+  agent: '',
+  layanan: '',
+  produk: '',
   dates: [today, today],
   valid: false
 })
 
 const options = reactive({
   regional: [],
-  office: []
+  office: [],
+  agent: [],
+  layanan: [],
+  produk: []
 })
 
 const dateRangeText = computed(() => {
@@ -132,6 +191,15 @@ const rules = computed(() => {
       v => !_.isEmpty(v) || 'Required'
     ],
     office: [
+      v => !_.isEmpty(v) || 'Required'
+    ],
+    agent: [
+      v => !_.isEmpty(v) || 'Required'
+    ],
+    layanan: [
+      v => !_.isEmpty(v) || 'Required'
+    ],
+    produk: [
       v => !_.isEmpty(v) || 'Required'
     ],
     dates: [
@@ -182,6 +250,69 @@ const getOffice = async () => {
     options.office = []
   }
   loading.office = false
+}
+
+const getAgent = async () => {
+  search.agent = ''
+  if (_.isEmpty(search.regional) || _.isEmpty(search.office)) {
+    options.agent = []
+    return
+  }
+  loading.agent = true
+  try {
+    const res = await $axios.$post('pengguna/mobile/combo/box', {
+      tipe: '1',
+      idSbu: search.regional,
+      idKp: search.office
+    })
+    options.agent = res.data
+    if (options.agent.length === 1) {
+      search.agent = options.agent?.[0].idPenggunaMobile ?? ''
+    }
+  } catch (err) {
+    options.agent = []
+  }
+  loading.agent = false
+}
+
+const getLayanan = async () => {
+  loading.layanan = true
+  try {
+    const res = await $axios.$post('layanan/combo/box/lihat', {
+      tipe: '1'
+    })
+    options.layanan = res.data
+  } catch (err) {
+    options.layanan = []
+  }
+  loading.layanan = false
+}
+
+const getProduk = async () => {
+  search.produk = ''
+  if (_.isEmpty(search.layanan)) {
+    options.produk = []
+    return
+  }
+  loading.produk = true
+  try {
+    const res = await $axios.$post('layanan/produk/combo/box/lihat', {
+      tipe: '1',
+      idLayanan: search.layanan
+    })
+    options.produk = res.data
+    if (options.produk.length === 1) {
+      search.produk = options.produk?.[0].idProduk ?? ''
+    }
+  } catch (err) {
+    options.produk = []
+  }
+  loading.produk = false
+}
+
+const getChildReq = async () => {
+  await getOffice()
+  await getAgent()
 }
 
 const onSearch = () => {

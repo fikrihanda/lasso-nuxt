@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-col cols="12">
+    <v-col cols="12" class="mb-3">
       <v-row align="center">
         <v-col cols="8">
           <div class="d-flex align-center">
@@ -36,7 +36,7 @@
 <script setup>
 import { computed, reactive, ref, useContext, useFetch } from '@nuxtjs/composition-api'
 
-const { $api } = useContext()
+const { $axios } = useContext()
 
 const series = ref([
   {
@@ -81,7 +81,7 @@ const dateNow = computed(() => {
 // eslint-disable-next-line no-unused-vars
 const { fetchState } = useFetch(async () => {
   try {
-    const res = await $api.pengguna.lihatLog()
+    const res = await $axios.$post('pengguna/lihat-log')
     const { data } = res
     chartOptions.xaxis.categories.push(...data.map(dt => dt.tanggal))
     series.value.splice(0, 1, {
@@ -92,9 +92,7 @@ const { fetchState } = useFetch(async () => {
       ...series.value[1],
       data: data.map(dt => Number(dt.jumlahMobile))
     })
-  } catch (err) {
-    console.log(err)
-  }
+  } catch (err) {}
 })
 
 </script>
