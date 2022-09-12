@@ -69,7 +69,7 @@ export const actions = {
     if (_.isEmpty(email)) { return Promise.reject(new Error('Salah Token')) }
 
     try {
-      const res = await this.$api.auth.login({
+      const res = await this.$axios.$post('auth/login', {
         email,
         password: 'password',
         loginBy: '2'
@@ -88,7 +88,7 @@ export const actions = {
   },
   async login ({ commit }, data) {
     try {
-      const res = await this.$api.auth.login({
+      const res = await this.$axios.$post('auth/login', {
         ...data,
         loginBy: '1'
       })

@@ -47,7 +47,7 @@ const toggleClick = () => {
   display: flex;
   position: sticky;
   top: 0;
-  z-index: 6;
+  z-index: 5;
 
   .v-tabs {
     width:  calc(100% - 78px);
