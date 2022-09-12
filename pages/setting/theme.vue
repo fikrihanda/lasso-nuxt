@@ -37,7 +37,6 @@
                     readonly
                     hide-details
                     dense
-                    @click="clickCheckbox(v)"
                   />
                 </div>
               </v-col>
