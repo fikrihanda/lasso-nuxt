@@ -11,7 +11,7 @@ export default function ({ store }) {
     restoreState: key => ls.get(key),
     reducer: state => ({
       authorization: state.authorization,
-      tabs: state.tabs
+      themes: state.themes
     })
   }).plugin(store)
 }

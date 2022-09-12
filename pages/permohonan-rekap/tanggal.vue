@@ -99,10 +99,6 @@ const column = computed(() => {
       fixed: true
     },
     {
-      caption: 'Office',
-      field: 'namaKp'
-    },
-    {
       caption: 'Negotiation',
       field: 'negotiation'
     },

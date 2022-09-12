@@ -7,7 +7,7 @@ export default {
 
   router: {
     base: '/icrm/',
-    middleware: ['set-token']
+    middleware: ['set-themes', 'set-token']
   },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -34,7 +34,6 @@ export default {
   plugins: [
     '~/plugins/axios',
     '~/plugins/moment',
-    '~/plugins/api',
     '~/plugins/vuex-persist',
     '~/plugins/vue-apexcharts'
   ],
