@@ -17,14 +17,14 @@
       <v-col cols="12">
         <v-card>
           <v-card-text class="pa-3">
-            <v-row>
+            <v-row class="theme-row">
               <v-col
                 v-for="(v, i) in themes"
                 :key="i"
                 cols="12"
                 sm="6"
                 md="4"
-                class="mb-3"
+                :class="[marginCalc(i)]"
               >
                 <div
                   :class="['theme-content', whoSelected(v) && 'is-selected']"
@@ -70,6 +70,15 @@ const clickCheckbox = (v) => {
   Object.keys(getTheme.dark).forEach((key) => {
     $vuetify.theme.themes.dark[key] = getTheme.dark[key]
   })
+}
+
+const marginCalc = (i) => {
+  if ((i === 7 || i === '7') || (i === 6 || i === '6')) {
+    return 'mb-3 mb-md-0'
+  }
+  if (i === 8 || i === '8') {
+    return 'mb-0'
+  }
 }
 </script>
 
@@ -117,6 +126,12 @@ export default {
   }
   .v-label {
     position: relative;
+  }
+}
+
+.theme-row {
+  > :not([hidden])~:not([hidden]) {
+    margin-bottom: 16px;
   }
 }
 </style>
