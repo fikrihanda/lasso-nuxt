@@ -28,7 +28,7 @@
               >
                 <div
                   :class="['theme-content', whoSelected(v) && 'is-selected']"
-                  :style="{backgroundImage: `url(${v.url})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}"
+                  :style="{backgroundImage: `url(${v.url})`}"
                   @click="clickCheckbox(v)"
                 >
                   <v-checkbox
@@ -98,6 +98,9 @@ export default {
   cursor: pointer;
   transition: all .3s cubic-bezier(.25, .8, .5, 1);
   border-radius: 6px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 
   &.is-selected {
     border: 2px solid var(--v-primary-base)
