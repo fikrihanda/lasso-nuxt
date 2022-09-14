@@ -20,6 +20,7 @@
       </v-col>
       <v-col cols="3">
         <v-text-field
+          v-model="form.jumlahDevice"
           :disabled="isEmptyUser"
           placeholder="Jumlah Device"
           outlined
@@ -66,6 +67,7 @@ const loading = reactive({
 const form = reactive({
   valid: false,
   user: {},
+  jumlahDevice: '',
   status: null
 })
 
@@ -88,4 +90,9 @@ const searchUser = async () => {
 watchDebounced(() => search.user, async () => {
   await searchUser()
 }, { debounce: 1000 })
+
+// eslint-disable-next-line no-undef
+defineExpose({
+  form
+})
 </script>
