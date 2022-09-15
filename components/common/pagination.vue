@@ -44,7 +44,6 @@
 
 <script setup>
 import { computed } from '@nuxtjs/composition-api'
-// eslint-disable-next-line no-undef
 const props = defineProps({
   value: {
     type: Number,
@@ -66,7 +65,6 @@ const props = defineProps({
   }
 })
 
-// eslint-disable-next-line no-undef
 const emits = defineEmits(['input', 'update:limit'])
 
 const model = computed({

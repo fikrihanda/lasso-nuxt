@@ -17,18 +17,18 @@
       <v-col cols="12">
         <v-card>
           <v-card-text class="pa-3">
-            <v-row>
+            <v-row class="theme-row">
               <v-col
                 v-for="(v, i) in themes"
                 :key="i"
                 cols="12"
                 sm="6"
                 md="4"
-                class="mb-3"
+                :class="[marginCalc(i)]"
               >
                 <div
                   :class="['theme-content', whoSelected(v) && 'is-selected']"
-                  :style="{backgroundImage: `url(${v.url})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}"
+                  :style="{backgroundImage: `url(${v.url})`}"
                   @click="clickCheckbox(v)"
                 >
                   <v-checkbox
@@ -71,6 +71,15 @@ const clickCheckbox = (v) => {
     $vuetify.theme.themes.dark[key] = getTheme.dark[key]
   })
 }
+
+const marginCalc = (i) => {
+  if ((i === 7 || i === '7') || (i === 6 || i === '6')) {
+    return 'mb-3 mb-md-0'
+  }
+  if (i === 8 || i === '8') {
+    return 'mb-0'
+  }
+}
 </script>
 
 <script>
@@ -89,6 +98,9 @@ export default {
   cursor: pointer;
   transition: all .3s cubic-bezier(.25, .8, .5, 1);
   border-radius: 6px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 
   &.is-selected {
     border: 2px solid var(--v-primary-base)
@@ -117,6 +129,12 @@ export default {
   }
   .v-label {
     position: relative;
+  }
+}
+
+.theme-row {
+  > :not([hidden])~:not([hidden]) {
+    margin-bottom: 16px;
   }
 }
 </style>
