@@ -80,7 +80,7 @@ const form = reactive({
 })
 
 const mobileMenus = computed(() => {
-  const storeMobileMenus = store.getters['authorization/menusMobile']
+  const storeMobileMenus = store.getters['authorization/menusBackoffice']
   return buildReduce(storeMobileMenus)
 })
 
@@ -96,7 +96,7 @@ const searchRole = async () => {
   try {
     const res = await $axios.$post('pengguna/backoffice/role/cari', {
       cari: search.role,
-      tipeRole: '2'
+      tipeRole: '1'
     })
     options.role = res.data
   } catch (err) {}
@@ -114,7 +114,7 @@ const selectRole = async () => {
   try {
     const res = await $axios.$post('pengguna/backoffice/role/cari/menu', {
       cari: form.role?.idRole,
-      tipeRole: '2'
+      tipeRole: '1'
     })
     form.selected = buildReduce(res.data)
   } catch (err) {}

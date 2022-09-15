@@ -7,7 +7,7 @@
             <v-row align="center">
               <v-col cols="6">
                 <div class="text-h6 font-weight-medium">
-                  Hak Akses Mobile
+                  Hak Akses Backoffice
                 </div>
               </v-col>
               <v-col cols="6" class="text-right">
@@ -49,9 +49,9 @@
 
 <script setup>
 import { computed, ref, useContext, watch } from '@nuxtjs/composition-api'
-import HakAksesMobileUser from '~/components/setting/user/hak-akses-mobile/user'
-import HakAksesMobileSbuKp from '~/components/setting/user/hak-akses-mobile/sbu-kp'
-import HakAksesMobileRoles from '~/components/setting/user/hak-akses-mobile/roles'
+import HakAksesMobileUser from '~/components/setting/user/hak-akses-backoffice/user'
+import HakAksesMobileSbuKp from '~/components/setting/user/hak-akses-backoffice/sbu-kp'
+import HakAksesMobileRoles from '~/components/setting/user/hak-akses-backoffice/roles'
 
 const { $axios } = useContext()
 
@@ -84,7 +84,7 @@ const getUserHAM = async () => {
   try {
     const { data = {} } = await $axios.$post('pengguna/backoffice/hak-akses/lihat', {
       cari: user.idPenggunaMobile,
-      tipeRole: '2'
+      tipeRole: '1'
     })
     hamUser.value.form.jumlahDevice = data.jumlahDevice
     hamUser.value.form.status = data.statusAktif
@@ -138,7 +138,7 @@ watch(() => hamUser.value?.form.user, async () => {
 export default {
   middleware: ['is-auth'],
   head: {
-    title: 'Hak Akses Mobile'
+    title: 'Hak Akses Backoffice'
   }
 }
 </script>
@@ -146,8 +146,8 @@ export default {
 <router>
 {
   meta: {
-    header: 'Hak Akses Mobile',
-    include: 'pages/setting/user/hak-akses-mobile.vue'
+    header: 'Hak Akses Backoffice',
+    include: 'pages/setting/user/hak-akses-backoffice.vue'
   }
 }
 </router>

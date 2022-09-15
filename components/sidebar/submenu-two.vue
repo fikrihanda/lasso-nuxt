@@ -40,8 +40,8 @@
 
 <script setup>
 import Submenu from '~/components/sidebar/submenu-one'
-// eslint-disable-next-line no-unused-vars
-const props = defineProps({
+
+defineProps({
   menu: {
     type: Object,
     default () {
