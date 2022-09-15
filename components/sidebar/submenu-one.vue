@@ -40,7 +40,7 @@
 
 <script setup>
 import Submenu from '~/components/sidebar/submenu-two'
-// eslint-disable-next-line no-undef,no-unused-vars
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   menu: {
     type: Object,

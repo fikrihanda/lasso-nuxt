@@ -17,7 +17,10 @@ module.exports = {
   globals: {
     _: true,
     moment: true,
-    $nuxt: true
+    $nuxt: true,
+    defineEmits: true,
+    defineProps: true,
+    defineExpose: true
   },
   // add your custom rules here
   rules: {

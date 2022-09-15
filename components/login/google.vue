@@ -10,7 +10,6 @@ import useGoogleLogin from '~/composables/useGoogleLogin'
 
 const { $config } = useContext()
 
-// eslint-disable-next-line no-undef
 const emits = defineEmits(['error', 'success'])
 
 const targetElement = ref(null)

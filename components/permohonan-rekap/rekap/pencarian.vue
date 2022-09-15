@@ -89,7 +89,7 @@ import { computed, reactive, ref, useContext, useFetch } from '@nuxtjs/compositi
 const today = moment().format('YYYY-MM-DD')
 
 const { $axios } = useContext()
-// eslint-disable-next-line no-undef
+
 const emits = defineEmits(['search', 'export', 'choose-col'])
 
 useFetch(async () => {
@@ -190,7 +190,6 @@ const onSearch = () => {
   emits('search')
 }
 
-// eslint-disable-next-line no-undef
 defineExpose({
   search
 })

@@ -47,7 +47,6 @@ import {
 } from 'devextreme-vue/data-grid'
 import { computed, ref } from '@nuxtjs/composition-api'
 
-// eslint-disable-next-line no-undef
 const props = defineProps({
   data: {
     type: Array,
@@ -109,7 +108,6 @@ const hideColumnChooser = () => {
   dataGrid.value.instance.hideColumnChooser()
 }
 
-// eslint-disable-next-line no-undef
 defineExpose({
   showColumnChooser,
   hideColumnChooser

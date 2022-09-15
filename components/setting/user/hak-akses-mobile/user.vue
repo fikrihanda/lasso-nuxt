@@ -1,7 +1,10 @@
 <template>
   <v-form v-model="form.valid">
     <v-row align="center">
-      <v-col cols="6">
+      <v-col cols="12" md="6" class="mb-3 mb-md-0">
+        <div class="mb-2 font-weight-bold">
+          Pilih User
+        </div>
         <v-autocomplete
           v-model="form.user"
           :search-input.sync="search.user"
@@ -18,7 +21,10 @@
           return-object
         />
       </v-col>
-      <v-col cols="3">
+      <v-col cols="6" md="3">
+        <div class="mb-2 font-weight-bold">
+          Jumlah Device
+        </div>
         <v-text-field
           v-model="form.jumlahDevice"
           :disabled="isEmptyUser"
@@ -28,19 +34,23 @@
           hide-details
         />
       </v-col>
-      <v-col cols="3">
-        <v-radio-group
-          v-model="form.status"
-          label="Status Mobile"
-          dense
-          :disabled="isEmptyUser"
-          hide-details
-          class="mt-0"
-          row
-        >
-          <v-radio label="Aktif" value="1" />
-          <v-radio label="Tidak Aktif" value="0" />
-        </v-radio-group>
+      <v-col cols="6" md="3">
+        <div class="mb-2 font-weight-bold">
+          Status Mobile
+        </div>
+        <div class="d-flex align-center" style="height: 40px">
+          <v-radio-group
+            v-model="form.status"
+            dense
+            :disabled="isEmptyUser"
+            hide-details
+            class="mt-0"
+            row
+          >
+            <v-radio label="Aktif" value="1" />
+            <v-radio label="Tidak Aktif" value="0" />
+          </v-radio-group>
+        </div>
       </v-col>
     </v-row>
   </v-form>
@@ -91,7 +101,6 @@ watchDebounced(() => search.user, async () => {
   await searchUser()
 }, { debounce: 1000 })
 
-// eslint-disable-next-line no-undef
 defineExpose({
   form
 })

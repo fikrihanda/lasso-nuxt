@@ -1,15 +1,15 @@
 <template>
   <v-row align="center">
-    <v-col cols="6" class="mb-3">
+    <v-col cols="5" class="mb-3">
       <div class="text-subtitle-1 font-weight-medium">
         Pilih SBU dan KP
       </div>
     </v-col>
-    <v-col cols="6" class="mb-3 text-right">
-      <v-btn depressed small color="primary" :disabled="disabled">
+    <v-col cols="7" class="mb-3 text-right">
+      <v-btn depressed small color="primary" :disabled="disabled" @click="selectAll">
         Select All
       </v-btn>
-      <v-btn depressed small color="primary" :disabled="disabled">
+      <v-btn depressed small color="primary" :disabled="disabled" @click="resetAll">
         Reset
       </v-btn>
     </v-col>
@@ -69,7 +69,19 @@ const sbuKp = computed(() => {
   }, [])
 })
 
-// eslint-disable-next-line no-undef
+const selectAll = () => {
+  form.selected = []
+  sbuKp.value.forEach((sbu) => {
+    sbu.children.forEach((kp) => {
+      form.selected.push(kp)
+    })
+  })
+}
+
+const resetAll = () => {
+  form.selected = []
+}
+
 defineExpose({
   form,
   sbuKp

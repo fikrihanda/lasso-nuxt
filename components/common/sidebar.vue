@@ -81,7 +81,6 @@ import SidebarSubmenu from '~/components/sidebar/submenu-one'
 const store = useStore()
 const router = useRouter()
 
-// eslint-disable-next-line no-undef
 const props = defineProps({
   value: {
     type: Boolean,
@@ -97,7 +96,6 @@ const props = defineProps({
   }
 })
 
-// eslint-disable-next-line no-undef
 const emits = defineEmits(['input'])
 
 const model = computed({

@@ -29,17 +29,17 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="12" md="6" class="mb-3 mb-md-0">
+      <v-col cols="12" md="6" lg="5" class="mb-3 mb-md-0">
         <v-card>
           <v-card-text class="pa-3">
             <hak-akses-mobile-sbu-kp ref="hamSbuKp" :disabled="isEmptyUser" />
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="12" md="6">
+      <v-col cols="12" md="6" lg="7">
         <v-card>
           <v-card-text class="pa-3">
-            a
+            <hak-akses-mobile-roles ref="hamRoles" />
           </v-card-text>
         </v-card>
       </v-col>
@@ -51,11 +51,13 @@
 import { computed, ref, useContext, watch } from '@nuxtjs/composition-api'
 import HakAksesMobileUser from '~/components/setting/user/hak-akses-mobile/user'
 import HakAksesMobileSbuKp from '~/components/setting/user/hak-akses-mobile/sbu-kp'
+import HakAksesMobileRoles from '~/components/setting/user/hak-akses-mobile/roles'
 
 const { $axios } = useContext()
 
 const hamUser = ref(null)
 const hamSbuKp = ref(null)
+const hamRoles = ref(null)
 
 const isEmptyUser = computed(() => {
   return _.isEmpty(hamUser.value?.form.user)
