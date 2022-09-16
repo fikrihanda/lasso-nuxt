@@ -44,7 +44,9 @@ defineProps({
 const store = useStore()
 
 const form = reactive({
-  selected: []
+  valid: false,
+  selected: [],
+  old_selected: []
 })
 
 const sbuKp = computed(() => {
@@ -52,20 +54,46 @@ const sbuKp = computed(() => {
   return buildReduce(storeSbuKp)
 })
 
-const buildReduce = (val, type = 'Sbu') => {
+const sbuKpToPayload = computed(() => {
+  return sbuKp.value.reduce((prev, cur) => {
+    cur?.children.forEach(c => prev.push(`${c?.sbu}##${c?.id}`))
+    return prev
+  }, []).join('@@')
+})
+
+const selectedToPayload = computed(() => {
+  return form.selected?.reduce((prev, cur) => {
+    prev.push(`${cur?.sbu}##${cur?.id}`)
+    return prev
+  }, []).join('@@')
+})
+
+const oldSelectedToPayload = computed(() => {
+  return form.old_selected?.reduce((prev, cur) => {
+    prev.push(`${cur?.sbu}##${cur?.id}`)
+    return prev
+  }, []).join('@@')
+})
+
+const buildReduce = (val, type = 'Sbu', cr = null) => {
   const whoChild = type === 'Sbu' ? 'Kp' : ''
   return val.reduce((prev, cur) => {
     const children = _.isEmpty(cur?.[`data${whoChild}`])
       ? []
-      : buildReduce(cur?.[`data${whoChild}`], 'Kp')
+      : buildReduce(cur?.[`data${whoChild}`], whoChild, cur)
     const obj = {
       id: cur?.[`id${type}`],
       name: cur?.[`nama${type}`]
     }
     if (!_.isEmpty(children)) { obj.children = children }
+    if (cr !== null) { obj.sbu = cr?.idSbu }
     prev.push(obj)
     return prev
   }, [])
+}
+
+const validate = () => {
+  form.valid = !_.isEmpty(form.selected)
 }
 
 const selectAll = () => {
@@ -79,6 +107,10 @@ const resetAll = () => {
 
 defineExpose({
   form,
-  sbuKp
+  sbuKp,
+  selectedToPayload,
+  oldSelectedToPayload,
+  sbuKpToPayload,
+  validate
 })
 </script>

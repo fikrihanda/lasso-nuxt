@@ -75,8 +75,10 @@ const loading = reactive({
   role: false
 })
 const form = reactive({
+  valid: false,
   role: null,
-  selected: []
+  selected: [],
+  old_selected: []
 })
 
 const mobileMenus = computed(() => {
@@ -86,6 +88,18 @@ const mobileMenus = computed(() => {
 
 const treeViewDisabled = computed(() => {
   return props.disabled || _.isEmpty(form.role)
+})
+
+const mobileMenusToPayload = computed(() => {
+  return buildReducePayload(mobileMenus.value).join('@@')
+})
+
+const selectedToPayload = computed(() => {
+  return buildReducePayload(form.selected).join('@@')
+})
+
+const oldSelectedToPayload = computed(() => {
+  return buildReducePayload(form.old_selected).join('@@')
 })
 
 const searchRole = async () => {
@@ -136,6 +150,20 @@ const buildReduce = (val) => {
   }, [])
 }
 
+const buildReducePayload = (val, prv = null) => {
+  return val.reduce((prev, cur) => {
+    if (prv === null) {
+      prev.push(cur.id)
+    } else {
+      prv.push(cur.id)
+    }
+    if (cur?.children) {
+      buildReducePayload(cur?.children, prev)
+    }
+    return prv === null ? prev : prv
+  }, [])
+}
+
 const selectAll = () => {
   form.selected = []
   form.selected = _.cloneDeep(mobileMenus.value)
@@ -143,6 +171,10 @@ const selectAll = () => {
 
 const resetAll = () => {
   form.selected = []
+}
+
+const validate = () => {
+  form.valid = !(_.isEmpty(form.role) || _.isEmpty(form.selected))
 }
 
 watch(() => form.role, async () => {
@@ -162,6 +194,10 @@ watchDebounced(() => search.role, async () => {
 defineExpose({
   form,
   options,
-  isForm
+  isForm,
+  selectedToPayload,
+  oldSelectedToPayload,
+  mobileMenusToPayload,
+  validate
 })
 </script>

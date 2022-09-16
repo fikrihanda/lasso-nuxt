@@ -11,7 +11,12 @@
                 </div>
               </v-col>
               <v-col cols="6" class="text-right">
-                <v-btn color="primary" :disabled="isRealDisabled">
+                <v-btn
+                  color="primary"
+                  :loading="loading.save"
+                  :disabled="isRealDisabled"
+                  @click="onSave"
+                >
                   <v-icon left>
                     mdi-check
                   </v-icon>
@@ -48,7 +53,7 @@
 </template>
 
 <script setup>
-import { computed, ref, useContext, watch } from '@nuxtjs/composition-api'
+import { computed, reactive, ref, useContext, watch } from '@nuxtjs/composition-api'
 import HakAksesMobileUser from '~/components/setting/user/hak-akses-mobile/user'
 import HakAksesMobileSbuKp from '~/components/setting/user/hak-akses-mobile/sbu-kp'
 import HakAksesMobileRoles from '~/components/setting/user/hak-akses-mobile/roles'
@@ -58,6 +63,9 @@ const { $axios } = useContext()
 const hamUser = ref(null)
 const hamSbuKp = ref(null)
 const hamRoles = ref(null)
+const loading = reactive({
+  save: false
+})
 
 const isEmptyUser = computed(() => {
   return _.isEmpty(hamUser.value?.form.user)
@@ -73,9 +81,11 @@ const isRealDisabled = computed(() => {
 const getUserHAM = async () => {
   const { form: { user = {} } = {} } = hamUser.value
   hamSbuKp.value.form.selected = []
+  hamSbuKp.value.form.old_selected = []
   hamRoles.value.isForm = 'current'
   hamRoles.value.form.role = null
   hamRoles.value.selected = []
+  hamRoles.value.old_selected = []
   if (_.isEmpty(user)) {
     hamUser.value.form.jumlahDevice = ''
     hamUser.value.form.status = null
@@ -86,32 +96,83 @@ const getUserHAM = async () => {
       cari: user.idPenggunaMobile,
       tipeRole: '2'
     })
-    hamUser.value.form.jumlahDevice = data.jumlahDevice
-    hamUser.value.form.status = data.statusAktif
-    hamSbuKp.value.sbuKp.forEach((v) => {
-      v?.children.forEach((vc) => {
-        const isExits = data.sbuKP.find(f => f.idKP === vc.id)
-        if (isExits) { hamSbuKp.value.form.selected.push(vc) }
-      })
-    })
-    hamRoles.value.isForm = 'parent'
-    hamRoles.value.options.role = [
-      {
-        idRole: data.idRole,
-        namaRole: data.namaRole
-      }
-    ]
-    hamRoles.value.form.role = {
-      idRole: data.idRole,
-      namaRole: data.namaRole
-    }
-    hamRoles.value.form.selected = buildReduce(data.menu)
+    setHamUser(data)
+    setHamSbuKp(data)
+    setHamRole(data)
   } catch (err) {
     hamUser.value.form.jumlahDevice = ''
     hamUser.value.form.status = null
-    hamSbuKp.value.form.selected = []
     hamRoles.value.form.role = null
   }
+}
+
+const setHamUser = (data) => {
+  hamUser.value.form.jumlahDevice = data.jumlahDevice
+  hamUser.value.form.status = data.statusAktif
+}
+
+const setHamSbuKp = (data) => {
+  hamSbuKp.value.sbuKp.forEach((v) => {
+    v?.children.forEach((vc) => {
+      const isExits = data.sbuKP.find(f => f.idKP === vc.id)
+      if (isExits) {
+        hamSbuKp.value.form.selected.push({
+          ...vc,
+          sbu: v.id
+        })
+        hamSbuKp.value.form.old_selected.push({
+          ...vc,
+          sbu: v.id
+        })
+      }
+    })
+  })
+}
+
+const setHamRole = (data) => {
+  hamRoles.value.isForm = 'parent'
+  hamRoles.value.options.role = [
+    {
+      idRole: data.idRole,
+      namaRole: data.namaRole
+    }
+  ]
+  hamRoles.value.form.role = {
+    idRole: data.idRole,
+    namaRole: data.namaRole
+  }
+  buildReduce(data.menu).forEach((v) => {
+    v?.children?.forEach((vv) => {
+      hamRoles.value.form.selected.push(vv)
+      hamRoles.value.form.old_selected.push(vv)
+    })
+  })
+}
+
+const onSave = async () => {
+  hamUser.value.validate()
+  hamSbuKp.value.validate()
+  hamRoles.value.validate()
+  if (!hamUser.value.form.valid || !hamSbuKp.value.form.valid || !hamRoles.value.form.valid) { return }
+  loading.save = true
+  const payload = {
+    idPengguna: hamUser.value.form.user?.idPenggunaMobile,
+    idRole: hamRoles.value.form.role?.idRole,
+    jumlahDevice: hamUser.value.form.jumlahDevice,
+    statusAktif: hamUser.value.form.status,
+    listMenuBaru: hamRoles.value.selectedToPayload,
+    listMenuLama: hamRoles.value.oldSelectedToPayload,
+    listMenuUserLogin: hamRoles.value.mobileMenusToPayload,
+    listKpBaru: hamSbuKp.value.selectedToPayload,
+    listKpLama: hamSbuKp.value.oldSelectedToPayload,
+    listKpUserLogin: hamSbuKp.value.sbuKpToPayload,
+    tipeRole: '2'
+  }
+  try {
+    await $axios.$post('pengguna/backoffice/hak-akses/tambah', payload)
+    hamUser.value.reset()
+  } catch (err) {}
+  loading.save = false
 }
 
 const buildReduce = (val) => {
