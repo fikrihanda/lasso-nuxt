@@ -1,4 +1,4 @@
-export default function ({ store, $axios }) {
+export default function ({ store, $axios, redirect }) {
   $axios.onResponse((res) => {
     const { data } = res
     if (!_.isEmpty(data)) {
@@ -14,6 +14,7 @@ export default function ({ store, $axios }) {
       store.commit('authorization/setMenusBackoffice', [])
       store.commit('authorization/setInfo', [])
       store.commit('authorization/setToken', '')
+      redirect('/login')
     }
     return Promise.reject(err)
   })

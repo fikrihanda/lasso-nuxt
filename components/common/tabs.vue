@@ -8,6 +8,7 @@
       background-color="primary"
       center-active
       dark
+      show-arrows
     >
       <slot />
     </v-tabs>
